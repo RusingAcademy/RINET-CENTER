@@ -31,7 +31,7 @@ Verified locally on 2026-05-20 in production mode:
 
 Verified on Railway on 2026-05-21:
 
-- Deployment ID: `1e8c4a88-02ec-4ba6-86d8-7d4f0ce4a4e5`
+- Deployment ID: `a12434f1-621d-4c4e-8349-3ac81ac18262`
 - Deployment status: `Active`
 - Build driver: `nixpacks-v1.41.0`
 - Runtime setup: `nodejs_22`, `npm-9_x`
