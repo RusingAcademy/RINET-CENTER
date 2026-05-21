@@ -5,6 +5,42 @@ Format: every entry tied to a concrete file or measurable improvement.
 
 ---
 
+## v1.1.0 — Authentic photography & team (2026-05-20)
+
+### 📁 Assets added (`/public/images/`)
+
+- `brand/logo.jpg` — official RINET Center logo (used in Header and Footer).
+- `hero/hero-banner.jpg` — home page hero background (gradient overlay tuned for legibility).
+- `team/*.png` — 12 team portraits at 400×400, sourced from the current rinetcenter.com.
+- `partners/*.{jpg,png}` — Scotiabank, RBC, Government of Ontario, Rusinga Academy logos.
+- `context/*.jpg` — 5 context photographs (business meeting, team, conference, etc.) used as section accents.
+
+All images were resized via Wix CDN parameters before saving to keep the repo lean (total ~5 MB).
+
+### 🧱 Content modules
+
+- New `content/team.ts` — bilingual list of 12 team members with name, role (placeholder, to be confirmed), photo path, and slug.
+- `content/partners.ts` — extended with `logo` field; `PartnerLogo` component now renders the actual image with optimization via `next/image`.
+
+### 🧩 Components
+
+- New `TeamMemberCard` — accessible portrait card with `next/image` and hover treatment.
+- `Header` and `Footer` — replaced placeholder "R" mark with the real RINET logo.
+- `Hero` — accepts an optional `backgroundImage` + alt, layered behind a brand-tinted gradient.
+- `PartnerLogo` — image-aware; falls back to text wordmark when no logo is provided.
+
+### 🖼 Page updates
+
+- Home (`/`) — hero now uses `hero-banner.jpg`; partners grid renders real logos.
+- About — hero uses `context/business-team.jpg` behind the navy overlay; a new 4-column grid renders all 12 team members.
+
+### ⚠️ Still to validate
+
+- Team member **roles/titles** in `content/team.ts` — currently set to "Team member" / "Membre de l'équipe" as a respectful placeholder. Each member should confirm their official title.
+- Photo licensing / usage rights — the photos were sourced from the publicly visible rinetcenter.com (Wix CDN). RINET Center should confirm rights to redistribute them on this new site.
+
+---
+
 ## v1.0.0 — Initial bilingual relaunch (2026-05-20)
 
 ### 📁 Files created

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import { getDictionary, site } from '@/content/site';
@@ -25,12 +26,13 @@ export function Footer({ locale }: Props) {
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
           <Link href={`/${locale}`} className="flex items-center gap-2" aria-label={site.name}>
-            <span
-              aria-hidden
-              className="grid h-9 w-9 place-items-center rounded-md bg-white font-display text-lg font-bold text-brand-navy"
-            >
-              R
-            </span>
+            <Image
+              src="/images/brand/logo.jpg"
+              alt={`${site.name} logo`}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-md object-cover"
+            />
             <span className="flex flex-col leading-tight">
               <span className="font-display text-lg font-bold">RINET</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-white/70">Center</span>

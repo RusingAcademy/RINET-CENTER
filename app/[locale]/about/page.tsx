@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale, type Locale } from '@/i18n/config';
 import { getDictionary } from '@/content/site';
+import { getTeam } from '@/content/team';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ValueCard } from '@/components/ValueCard';
+import { TeamMemberCard } from '@/components/TeamMemberCard';
 import { CTASection } from '@/components/CTASection';
 
 export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
@@ -16,16 +19,33 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
   const d = getDictionary(locale);
+  const team = getTeam(locale);
 
   return (
     <>
-      <section className="bg-brand-navy py-16 text-white sm:py-20">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-brand-navy py-16 text-white sm:py-20">
+        <Image
+          src="/images/context/business-team.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 h-full w-full object-cover opacity-25"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(115deg, rgba(11,37,69,0.92) 0%, rgba(11,37,69,0.78) 60%, rgba(11,37,69,0.6) 100%)',
+          }}
+        />
+        <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-gold">
             {d.nav.about}
           </p>
           <h1 className="mt-4 font-display text-4xl font-bold sm:text-5xl">{d.about.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg text-white/85">{d.about.lead}</p>
+          <p className="mt-6 max-w-3xl text-lg text-white/90">{d.about.lead}</p>
         </div>
       </section>
 
@@ -79,7 +99,19 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
 
       <section className="bg-brand-surface py-16 sm:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader title={d.about.teamTitle} subtitle={d.about.teamNote} />
+          <SectionHeader
+            title={d.about.teamTitle}
+            subtitle={
+              locale === 'fr'
+                ? 'Une équipe engagée au service des entrepreneurs immigrants francophones. Les titres officiels seront confirmés par chaque membre.'
+                : 'A team committed to serving Francophone immigrant entrepreneurs. Official titles to be confirmed by each member.'
+            }
+          />
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {team.map((m) => (
+              <TeamMemberCard key={m.slug} member={m} />
+            ))}
+          </div>
         </div>
       </section>
 

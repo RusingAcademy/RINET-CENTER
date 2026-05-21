@@ -105,7 +105,7 @@ Some content is intentionally placeholder-quality and **must be confirmed by the
 
 - **Impact numbers** in `content/impact.ts` are working estimates (50+ entrepreneurs supported, 20+ workshops, 10+ partners, 3+ years). Replace with verified figures from your records.
 - **Testimonials** in `content/testimonials.ts` are illustrative — replace with real quotes (with author consent).
-- **Team members** on the About page — full bios/photos are not yet included; add to `content/site.ts` (`about.teamNote`) or a dedicated `team.ts`.
+- **Team member titles** in `content/team.ts` — 12 portraits are in place; the *role* field is currently a generic placeholder ("Team member" / "Membre de l'équipe"). Each person should confirm their official title.
 - **Donation processing**: the Donate page currently routes donors to `contact@rinet.center`. Wire Stripe / Donorbox / CanadaHelps when ready.
 - **Contact form**: submits to client-side state only. Connect to a real backend (Formspree, Resend, n8n, Mailchimp, your CRM) before launch.
 - **Charitable status**: the Donate FAQ says status is pending — update when confirmed.

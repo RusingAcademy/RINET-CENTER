@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import type { Locale } from '@/i18n/config';
@@ -23,12 +24,14 @@ export function Header({ locale }: Props) {
       </a>
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href={`/${locale}`} className="flex items-center gap-2" aria-label={site.name}>
-          <span
-            aria-hidden
-            className="grid h-9 w-9 place-items-center rounded-md bg-brand-navy font-display text-lg font-bold text-white"
-          >
-            R
-          </span>
+          <Image
+            src="/images/brand/logo.jpg"
+            alt={`${site.name} logo`}
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10 rounded-md object-cover"
+          />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-lg font-bold text-brand-navy">RINET</span>
             <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted">Center</span>

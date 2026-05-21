@@ -31,6 +31,8 @@ export default function HomePage({ params }: { params: { locale: string } }) {
         ctaPrimary={{ label: d.home.hero.ctaPrimary, href: `/${locale}/programs` }}
         ctaSecondary={{ label: d.home.hero.ctaSecondary, href: `/${locale}/get-involved` }}
         ctaTertiary={{ label: d.home.hero.ctaTertiary, href: `/${locale}/donate` }}
+        backgroundImage="/images/hero/hero-banner.jpg"
+        backgroundAlt=""
       />
 
       <section className="bg-brand-surface py-16 sm:py-20" aria-labelledby="who-we-help-title">
@@ -106,7 +108,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
           />
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {partners.map((p) => (
-              <PartnerLogo key={p.name} name={p.name} href={p.url} />
+              <PartnerLogo key={p.name} name={p.name} href={p.url} logo={p.logo} />
             ))}
           </div>
         </div>
