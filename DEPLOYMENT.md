@@ -11,8 +11,10 @@ This file tracks the Railway and domain launch plan for the RINET Center website
 - Railway environment ID: `d2a1ae4e-c17a-4710-9a35-2db721f116a2`
 - GitHub repo: `RusingAcademy/RINET-CENTER`
 - Production branch: `main`
-- Railway service URL: pending until the service is created
-- Migration status: pre-production verification complete; Railway and DNS changes pending authenticated access
+- Railway service: `RINET-CENTER`
+- Railway service ID: `247c86fe-e781-47dc-89ba-81c16362e2a5`
+- Railway service URL: `https://rinet-center-production.up.railway.app`
+- Migration status: Railway deployment complete; custom domains added in Railway and waiting for DNS updates in Wix
 
 ## Application verification
 
@@ -26,6 +28,19 @@ Verified locally on 2026-05-20 in production mode:
 - `/en`, `/fr`, and all public locale routes: `200`
 - `/sitemap.xml`: `200`
 - `/robots.txt`: `200`
+
+Verified on Railway on 2026-05-21:
+
+- Deployment ID: `1e8c4a88-02ec-4ba6-86d8-7d4f0ce4a4e5`
+- Deployment status: `Active`
+- Build driver: `nixpacks-v1.41.0`
+- Runtime setup: `nodejs_22`, `npm-9_x`
+- Install command: `npm ci`
+- Build command: `npm run build`
+- Start command: `npm run start`
+- Runtime log: `Next.js 14.2.35`, `Ready in 204ms`
+- Healthcheck: passed on `/en`
+- Public Railway URL: `https://rinet-center-production.up.railway.app`
 
 Public routes expected after deployment:
 
@@ -80,6 +95,10 @@ Deployment steps:
 6. Generate or copy the service `*.up.railway.app` URL.
 7. Verify `/en` returns `200` and the build logs show `22/22` generated pages.
 
+Current Railway public URL:
+
+- `https://rinet-center-production.up.railway.app`
+
 ## Domain strategy
 
 Canonical domain:
@@ -95,6 +114,34 @@ Redirect domains:
 - `www.rinet.center` -> `https://www.rinetcenter.com`
 
 Prefer Railway-level redirect domains instead of hardcoded application redirects.
+
+Current Railway custom-domain status:
+
+- `www.rinetcenter.com`: added, waiting for DNS update
+- `rinetcenter.com`: added, waiting for DNS update
+- `www.rinetcenter.ca`: added, waiting for DNS update
+- `rinetcenter.ca`: added, waiting for DNS update
+- `www.rinet.center`: added, waiting for DNS update
+- `rinet.center`: added, waiting for DNS update
+
+Railway DNS records to create in the active DNS host, currently Wix:
+
+| Hostname | Type | Name | Value |
+|---|---|---|---|
+| `www.rinetcenter.com` | CNAME | `www` | `c25e05yb.up.railway.app` |
+| `www.rinetcenter.com` | TXT | `_railway-verify.www` | `railway-verify=14077e618c61288ba87f8607a9c15d2cb5c704487bbddb4752fdc6c6a9bb16ad` |
+| `rinetcenter.com` | CNAME | `@` | `6ia684jq.up.railway.app` |
+| `rinetcenter.com` | TXT | `_railway-verify` | `railway-verify=d3271c8f4033c904ef5445c4d4aefe8adad85563a2da8cfb7ab8fa1d75bde27f` |
+| `www.rinetcenter.ca` | CNAME | `www` | `0vptgha0.up.railway.app` |
+| `www.rinetcenter.ca` | TXT | `_railway-verify.www` | `railway-verify=d998f1f7a62e8b815656738f54e50740cd02dc3ef31ce43958fe194de5fd2035` |
+| `rinetcenter.ca` | CNAME | `@` | `gbtcmpd4.up.railway.app` |
+| `rinetcenter.ca` | TXT | `_railway-verify` | `railway-verify=3c17cc39b37740a6c290011ecd056a198aa8bdaeec8696949ae3758820c5f68e` |
+| `www.rinet.center` | CNAME | `www` | `p4olh7eh.up.railway.app` |
+| `www.rinet.center` | TXT | `_railway-verify.www` | `railway-verify=439da943cb5d5948b0aeb4cfaf089d0fe5dbaa2ef0b02e9dcaca463c72ba2685` |
+| `rinet.center` | CNAME | `@` | `0onxq40n.up.railway.app` |
+| `rinet.center` | TXT | `_railway-verify` | `railway-verify=05ad6580e52af769e65eadf0702c9742ebfa7577daae9c9cd645e568d0526623` |
+
+Important: do not delete or alter MX, SPF, DKIM, DMARC, or existing Google verification TXT records while adding the Railway verification TXT records.
 
 ## DNS inventory before migration
 
@@ -138,8 +185,8 @@ Because DNS is hosted at Wix, use one of these two safe paths:
 
 ### Preferred path: update DNS in Wix
 
-1. Create all custom domains in Railway first.
-2. Capture Railway's required A/CNAME targets.
+1. Create all custom domains in Railway first. Done on 2026-05-21.
+2. Capture Railway's required CNAME/TXT targets. Done on 2026-05-21; see the DNS table above.
 3. In Wix DNS, update only web records for apex and `www`.
 4. Preserve all MX, SPF, DKIM, DMARC, and verification TXT records.
 5. Keep Wix site active for 24-48 hours as rollback.
@@ -157,14 +204,14 @@ Use this only after exporting or screenshotting the full Wix DNS zone.
 
 ## Acceptance checklist
 
-- [ ] Railway service created from `RusingAcademy/RINET-CENTER` on `main`
-- [ ] Build green on Railway
-- [ ] Healthcheck `/en` returns `200`
-- [ ] Railway logs clean after boot
-- [ ] `*.up.railway.app/` redirects to `/en`
-- [ ] `*.up.railway.app/en` and `/fr` return `200`
-- [ ] All locale routes return `200`
-- [ ] Images load correctly
+- [x] Railway service created from `RusingAcademy/RINET-CENTER` on `main`
+- [x] Build green on Railway
+- [x] Healthcheck `/en` returns `200`
+- [x] Railway logs clean after boot
+- [x] `*.up.railway.app/` redirects to `/en`
+- [x] `*.up.railway.app/en` and `/fr` return `200`
+- [x] All locale routes return `200`
+- [x] Images load correctly
 - [ ] `https://www.rinetcenter.com` serves the new Next.js site
 - [ ] Apex and alternate domains redirect with `301` to `https://www.rinetcenter.com`
 - [ ] SSL valid for all hostnames
