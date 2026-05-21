@@ -14,7 +14,7 @@ This file tracks the Railway and domain launch plan for the RINET Center website
 - Railway service: `RINET-CENTER`
 - Railway service ID: `247c86fe-e781-47dc-89ba-81c16362e2a5`
 - Railway service URL: `https://rinet-center-production.up.railway.app`
-- Migration status: Railway deployment complete; custom domains added in Railway and waiting for DNS updates in Wix
+- Migration status: Railway deployment complete; `www` domains connected through Wix DNS; apex domains remain on Wix A records and should redirect to the canonical `www.rinetcenter.com`
 
 ## Application verification
 
@@ -113,16 +113,16 @@ Redirect domains:
 - `rinet.center` -> `https://www.rinetcenter.com`
 - `www.rinet.center` -> `https://www.rinetcenter.com`
 
-Prefer Railway-level redirect domains instead of hardcoded application redirects.
+Prefer Railway-level redirect domains when available. Because Wix does not support CNAME, ALIAS, or ANAME records at the apex for these domains, apex hostnames should be redirected in Wix while `www` alternate hostnames are redirected by the Next.js app.
 
-Current Railway custom-domain status:
+Current domain status:
 
-- `www.rinetcenter.com`: added, waiting for DNS update
-- `rinetcenter.com`: added, waiting for DNS update
-- `www.rinetcenter.ca`: added, waiting for DNS update
-- `rinetcenter.ca`: added, waiting for DNS update
-- `www.rinet.center`: added, waiting for DNS update
-- `rinet.center`: added, waiting for DNS update
+- `www.rinetcenter.com`: CNAME now points to Railway and returns the RINET Center site.
+- `www.rinetcenter.ca`: CNAME now points to Railway; app-level `301` redirect sends requests to `https://www.rinetcenter.com`.
+- `www.rinet.center`: CNAME now points to Railway; app-level `301` redirect sends requests to `https://www.rinetcenter.com`.
+- `rinetcenter.com`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
+- `rinetcenter.ca`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
+- `rinet.center`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
 
 Railway DNS records to create in the active DNS host, currently Wix:
 
@@ -141,7 +141,7 @@ Railway DNS records to create in the active DNS host, currently Wix:
 | `rinet.center` | CNAME | `@` | `0onxq40n.up.railway.app` |
 | `rinet.center` | TXT | `_railway-verify` | `railway-verify=05ad6580e52af769e65eadf0702c9742ebfa7577daae9c9cd645e568d0526623` |
 
-Important: do not delete or alter MX, SPF, DKIM, DMARC, or existing Google verification TXT records while adding the Railway verification TXT records.
+Important: Wix rejected CNAME records at `@`; keep the apex A records on Wix and use Wix redirects for apex hostnames unless Railway provides A records or the DNS zone is moved to a provider with CNAME flattening. Do not delete or alter MX, SPF, DKIM, DMARC, or existing Google verification TXT records while adding the Railway verification TXT records.
 
 ## DNS inventory before migration
 
@@ -187,9 +187,10 @@ Because DNS is hosted at Wix, use one of these two safe paths:
 
 1. Create all custom domains in Railway first. Done on 2026-05-21.
 2. Capture Railway's required CNAME/TXT targets. Done on 2026-05-21; see the DNS table above.
-3. In Wix DNS, update only web records for apex and `www`.
+3. In Wix DNS, update only `www` CNAME records and Railway TXT verification records.
 4. Preserve all MX, SPF, DKIM, DMARC, and verification TXT records.
-5. Keep Wix site active for 24-48 hours as rollback.
+5. Configure Wix redirects for apex hostnames to `https://www.rinetcenter.com`.
+6. Keep Wix site active for 24-48 hours as rollback.
 
 ### Alternative path: move DNS hosting to GoDaddy
 
@@ -212,7 +213,7 @@ Use this only after exporting or screenshotting the full Wix DNS zone.
 - [x] `*.up.railway.app/en` and `/fr` return `200`
 - [x] All locale routes return `200`
 - [x] Images load correctly
-- [ ] `https://www.rinetcenter.com` serves the new Next.js site
+- [x] `https://www.rinetcenter.com` serves the new Next.js site
 - [ ] Apex and alternate domains redirect with `301` to `https://www.rinetcenter.com`
 - [ ] SSL valid for all hostnames
 - [ ] `contact@rinet.center` receives a test email after DNS propagation
