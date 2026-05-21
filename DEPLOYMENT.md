@@ -113,13 +113,13 @@ Redirect domains:
 - `rinet.center` -> `https://www.rinetcenter.com`
 - `www.rinet.center` -> `https://www.rinetcenter.com`
 
-Prefer Railway-level redirect domains when available. Because Wix does not support CNAME, ALIAS, or ANAME records at the apex for these domains, apex hostnames should be redirected in Wix while `www` alternate hostnames are redirected by the Next.js app.
+Prefer Railway-level redirect domains when available. Because Wix does not support CNAME, ALIAS, or ANAME records at the apex for these domains, apex hostnames should be redirected in Wix while `www` alternate hostnames are redirected by the Next.js app with explicit `301` responses.
 
 Current domain status:
 
 - `www.rinetcenter.com`: CNAME now points to Railway and returns the RINET Center site.
-- `www.rinetcenter.ca`: CNAME now points to Railway; app-level `301` redirect sends requests to `https://www.rinetcenter.com`.
-- `www.rinet.center`: CNAME now points to Railway; app-level `301` redirect sends requests to `https://www.rinetcenter.com`.
+- `www.rinetcenter.ca`: CNAME now points to Railway; middleware `301` redirect sends requests to `https://www.rinetcenter.com`.
+- `www.rinet.center`: CNAME now points to Railway; middleware `301` redirect sends requests to `https://www.rinetcenter.com`.
 - `rinetcenter.com`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
 - `rinetcenter.ca`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
 - `rinet.center`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
