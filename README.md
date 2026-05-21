@@ -2,6 +2,8 @@
 
 A modern, bilingual (EN/FR), responsive, and accessible website for **RINET Center** — a Francophone immigrant entrepreneurship and integration hub based in Ottawa, Canada.
 
+Live: https://www.rinetcenter.com
+
 > **Positioning**
 > - 🇬🇧 *A Francophone Immigrant Entrepreneurship & Integration Hub in Canada*
 > - 🇫🇷 *Un pôle d'entrepreneuriat et d'intégration économique pour les immigrants francophones au Canada*
@@ -22,7 +24,7 @@ The site is designed to answer three questions in under 10 seconds:
 | Styling | **Tailwind CSS 3.4** | Consistent design system, zero runtime, easy to maintain. |
 | i18n | **Built-in `[locale]` routing** | No extra dependency; FR/EN paths under `/en` and `/fr`. |
 | Lint | **ESLint (next/core-web-vitals)** | Catches accessibility and React issues. |
-| Deploy target | **Vercel** (recommended) — also works on any Node host | Zero-config Next.js deployment. |
+| Deploy target | **Railway** | Matches the Rusinga production ecosystem and uses the included `railway.json`. |
 
 > No CMS dependency: all content lives in `/content/*.ts`, editable by anyone comfortable with text.
 
@@ -68,7 +70,7 @@ RINET-CENTER/
 
 ## 🚀 Getting started
 
-Requires **Node.js ≥ 18.17**.
+Requires **Node.js 22**.
 
 ```bash
 # 1. Install
@@ -165,7 +167,7 @@ The Rusinga ecosystem (and this project) ship on **Railway**. The repo includes 
 
 - [`railway.json`](railway.json) — Nixpacks builder, `npm run start` as the start command, healthcheck on `/en`, automatic retry on failure.
 - [`.nvmrc`](.nvmrc) — pins Node 22 to match the rest of the Rusinga stack.
-- `package.json` — `engines.node >= 18.17.0`, and `next start` honours Railway's injected `PORT` env var automatically.
+- `package.json` — `engines.node 22.x`, and `next start` honours Railway's injected `PORT` env var automatically.
 
 **To deploy on Railway:**
 
