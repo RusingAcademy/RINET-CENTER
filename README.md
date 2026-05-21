@@ -159,21 +159,35 @@ Target Lighthouse Accessibility score: **95+**.
 
 ## 🚢 Deployment
 
-### Vercel (recommended)
+### Railway (this project's target)
 
-1. Push this repo to GitHub (`RusingAcademy/RINET-CENTER`).
-2. Import the project on [vercel.com/new](https://vercel.com/new).
-3. Framework preset: **Next.js**. No env vars required.
-4. Set the production domain to `www.rinetcenter.com`.
+The Rusinga ecosystem (and this project) ship on **Railway**. The repo includes the config Railway needs out of the box:
 
-### Self-host (Node)
+- [`railway.json`](railway.json) — Nixpacks builder, `npm run start` as the start command, healthcheck on `/en`, automatic retry on failure.
+- [`.nvmrc`](.nvmrc) — pins Node 22 to match the rest of the Rusinga stack.
+- `package.json` — `engines.node >= 18.17.0`, and `next start` honours Railway's injected `PORT` env var automatically.
+
+**To deploy on Railway:**
+
+1. In your Railway project, **New → Deploy from GitHub repo → `RusingAcademy/RINET-CENTER`**.
+2. Railway auto-detects Next.js via Nixpacks. No env vars are required for v1.
+3. Add a domain: bind `www.rinetcenter.com` (and optionally `rinetcenter.com`) in Settings → Networking.
+4. Railway will build (`npm install` → `npm run build`) and start (`npm run start`) automatically on every push to `main`.
+
+> **Healthcheck:** set to `/en` (the default English homepage). The root `/` is a 307 redirect to `/en`, so Railway's HTTP healthcheck needs the explicit path.
+
+### Self-host (any Node host)
 
 ```bash
 npm run build
-npm run start    # node server, port 3000
+PORT=3000 npm run start
 ```
 
-Then put any reverse proxy (Nginx, Caddy) in front, terminating TLS.
+Put a reverse proxy (Nginx, Caddy) in front, terminating TLS.
+
+### Vercel (alternative, not the chosen target)
+
+Works out of the box — import the repo at [vercel.com/new](https://vercel.com/new) and pick the Next.js preset. Kept here only as a fallback option; **Railway is the production target for this project**.
 
 ---
 

@@ -5,6 +5,23 @@ Format: every entry tied to a concrete file or measurable improvement.
 
 ---
 
+## v1.2.0 — Railway deployment config (2026-05-20)
+
+### 🚂 Files added
+
+- `railway.json` — explicit Nixpacks builder, `npm run start` as start command, healthcheck on `/en` (the root redirects, so the explicit path is required), restart on failure (max 5 retries).
+- `.nvmrc` — pins Node 22 to match the rest of the Rusinga ecosystem.
+
+### 📝 Docs
+
+- `README.md` — replaced the "Vercel recommended" section with a **Railway-first** deployment guide. Vercel kept only as a fallback. Reasoning: the Rusinga ecosystem (and this project) runs on Railway; the previous default-Next.js advice was wrong for this context.
+
+### 🛠 No code changes required
+
+`next start` already binds to the `PORT` env var that Railway injects, so the existing `package.json` scripts work without modification.
+
+---
+
 ## v1.1.0 — Authentic photography & team (2026-05-20)
 
 ### 📁 Assets added (`/public/images/`)
