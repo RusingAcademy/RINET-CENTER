@@ -14,7 +14,7 @@ This file tracks the Railway and domain launch plan for the RINET Center website
 - Railway service: `RINET-CENTER`
 - Railway service ID: `247c86fe-e781-47dc-89ba-81c16362e2a5`
 - Railway service URL: `https://rinet-center-production.up.railway.app`
-- Migration status: Railway deployment complete; `www` domains connected through Wix DNS; apex domains remain on Wix A records and should redirect to the canonical `www.rinetcenter.com`
+- Migration status: Railway deployment complete; `www` domains connected through Wix DNS; apex domains redirect through Wix and resolve to the canonical `www.rinetcenter.com`
 
 ## Application verification
 
@@ -41,6 +41,20 @@ Verified on Railway on 2026-05-21:
 - Runtime log: `Next.js 14.2.35`, `Ready in 204ms`
 - Healthcheck: passed on `/en`
 - Public Railway URL: `https://rinet-center-production.up.railway.app`
+
+Verified publicly on 2026-05-26:
+
+- `https://www.rinetcenter.com/en`: `200 OK` from `railway-edge`
+- `https://www.rinetcenter.com/fr`: `200 OK` from `railway-edge`
+- `https://www.rinetcenter.ca/en`: `301` to `https://www.rinetcenter.com/en`
+- `https://www.rinet.center/en`: `301` to `https://www.rinetcenter.com/en`
+- `https://rinetcenter.com`: `301` from Wix to `https://www.rinetcenter.com/`
+- `https://rinetcenter.ca`: `301` from Wix to `https://www.rinetcenter.ca/`, then `301` from Railway to `https://www.rinetcenter.com/`
+- `https://rinet.center`: `301` from Wix to `https://www.rinet.center/`, then `301` from Railway to `https://www.rinetcenter.com/`
+- `https://www.rinetcenter.com/sitemap.xml`: `200 OK`
+- `https://www.rinetcenter.com/robots.txt`: `200 OK`
+- Public resolvers `1.1.1.1` and `8.8.8.8` resolve all `www` hostnames to Railway CNAME targets.
+- Google Workspace MX records remain present for `rinet.center` and `rinetcenter.ca`.
 
 Public routes expected after deployment:
 
@@ -120,9 +134,9 @@ Current domain status:
 - `www.rinetcenter.com`: CNAME now points to Railway and returns the RINET Center site.
 - `www.rinetcenter.ca`: CNAME now points to Railway; middleware `301` redirect sends requests to `https://www.rinetcenter.com`.
 - `www.rinet.center`: CNAME now points to Railway; middleware `301` redirect sends requests to `https://www.rinetcenter.com`.
-- `rinetcenter.com`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
-- `rinetcenter.ca`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
-- `rinet.center`: apex remains on Wix A records; configure Wix redirect to `https://www.rinetcenter.com`.
+- `rinetcenter.com`: apex remains on Wix A records and redirects to `https://www.rinetcenter.com`.
+- `rinetcenter.ca`: apex remains on Wix A records and redirects to `https://www.rinetcenter.ca`, which then redirects to `https://www.rinetcenter.com`.
+- `rinet.center`: apex remains on Wix A records and redirects to `https://www.rinet.center`, which then redirects to `https://www.rinetcenter.com`.
 
 Railway DNS records to create in the active DNS host, currently Wix:
 
@@ -214,8 +228,8 @@ Use this only after exporting or screenshotting the full Wix DNS zone.
 - [x] All locale routes return `200`
 - [x] Images load correctly
 - [x] `https://www.rinetcenter.com` serves the new Next.js site
-- [ ] Apex and alternate domains redirect with `301` to `https://www.rinetcenter.com`
-- [ ] SSL valid for all hostnames
+- [x] Apex and alternate domains redirect with `301` to `https://www.rinetcenter.com`
+- [x] SSL valid for all hostnames
 - [ ] `contact@rinet.center` receives a test email after DNS propagation
 - [ ] Wix remains available as rollback for 24-48 hours
 - [ ] Lighthouse targets met for `/en` and `/fr`
@@ -246,3 +260,8 @@ If email breaks:
 - Organization: Rusinga International Consulting Ltd. o/a RusingAcademy
 - Project: RINET Center
 - Technical handoff: Codex deployment session
+
+## Remaining verification notes
+
+- End-to-end email receipt for `contact@rinet.center` still requires sending and confirming a test message. DNS MX records are intact, but DNS presence is not the same as a delivered email test.
+- PageSpeed Insights returned `429 Too Many Requests` during the 2026-05-26 verification attempt. A local Lighthouse fallback was attempted, but the machine's `C:` drive was full enough to prevent Chrome from creating its temporary files. Re-run PageSpeed or Lighthouse after quota/disk space is available.
