@@ -31,6 +31,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
         ctaPrimary={{ label: d.home.hero.ctaPrimary, href: `/${locale}/programs` }}
         ctaSecondary={{ label: d.home.hero.ctaSecondary, href: `/${locale}/get-involved` }}
         ctaTertiary={{ label: d.home.hero.ctaTertiary, href: `/${locale}/donate` }}
+        highlights={d.home.hero.highlights}
         backgroundImage="/images/hero/hero-banner.jpg"
         backgroundAlt=""
       />

@@ -64,6 +64,11 @@ export const dictionary = {
         ctaPrimary: 'Apply to a Program',
         ctaSecondary: 'Become a Partner',
         ctaTertiary: 'Support Our Mission',
+        highlights: [
+          'Ottawa|Community-based support',
+          'FR / EN|Bilingual programming',
+          '2021|Founded to serve immigrant entrepreneurs',
+        ],
       },
       whoWeHelp: {
         title: 'Who We Help',
@@ -344,7 +349,7 @@ export const dictionary = {
         organization: 'Organization (optional)',
         message: 'How can we help?',
         submit: 'Send message',
-        note: 'This form will be wired to your email or CRM. For now, please email us directly at contact@rinet.center.',
+        note: 'Submitting opens a prepared email to contact@rinet.center so your message can be sent securely from your email app.',
       },
       reach: {
         title: 'Reach us directly',
@@ -404,6 +409,11 @@ export const dictionary = {
         ctaPrimary: 'Postuler à un programme',
         ctaSecondary: 'Devenir partenaire',
         ctaTertiary: 'Soutenir notre mission',
+        highlights: [
+          'Ottawa|Accompagnement communautaire',
+          'FR / EN|Programmation bilingue',
+          '2021|Fondé pour servir les entrepreneurs immigrants',
+        ],
       },
       whoWeHelp: {
         title: 'À qui nous nous adressons',
@@ -684,7 +694,7 @@ export const dictionary = {
         organization: 'Organisation (facultatif)',
         message: 'Comment pouvons-nous aider ?',
         submit: 'Envoyer le message',
-        note: 'Ce formulaire sera connecté à votre courriel ou CRM. Pour l’instant, écrivez-nous directement à contact@rinet.center.',
+        note: 'L’envoi ouvre un courriel préparé à contact@rinet.center afin que votre message parte de votre application courriel.',
       },
       reach: {
         title: 'Nous joindre directement',

@@ -2,19 +2,49 @@
 
 import { useState } from 'react';
 import type { Locale } from '@/i18n/config';
-import { getDictionary } from '@/content/site';
+import { getDictionary, site } from '@/content/site';
 
 type Props = { locale: Locale };
 
 export function ContactForm({ locale }: Props) {
   const d = getDictionary(locale);
   const [submitted, setSubmitted] = useState(false);
+  const [mailtoHref, setMailtoHref] = useState('');
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const profile = formData.get('profile')?.toString() ?? '';
+        const name = formData.get('name')?.toString() ?? '';
+        const email = formData.get('email')?.toString() ?? '';
+        const organization = formData.get('organization')?.toString() ?? '';
+        const message = formData.get('message')?.toString() ?? '';
+        const subject =
+          locale === 'fr'
+            ? `Demande RINET Center - ${name || 'Nouveau contact'}`
+            : `RINET Center inquiry - ${name || 'New contact'}`;
+        const body = [
+          locale === 'fr' ? 'Profil' : 'Profile',
+          profile,
+          '',
+          locale === 'fr' ? 'Nom' : 'Name',
+          name,
+          '',
+          locale === 'fr' ? 'Courriel' : 'Email',
+          email,
+          '',
+          locale === 'fr' ? 'Organisation' : 'Organization',
+          organization || '-',
+          '',
+          locale === 'fr' ? 'Message' : 'Message',
+          message,
+        ].join('\n');
+        const href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setMailtoHref(href);
         setSubmitted(true);
+        window.location.href = href;
       }}
       className="space-y-5"
       aria-describedby="form-note"
@@ -26,7 +56,7 @@ export function ContactForm({ locale }: Props) {
         <select
           id="profile"
           name="profile"
-          className="mt-1 block w-full rounded-md border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+          className="mt-1 block w-full rounded-lg border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
         >
           {d.contact.profiles.map((p) => (
             <option key={p.value} value={p.value}>
@@ -47,7 +77,7 @@ export function ContactForm({ locale }: Props) {
             type="text"
             required
             autoComplete="name"
-            className="mt-1 block w-full rounded-md border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className="mt-1 block w-full rounded-lg border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
           />
         </div>
         <div>
@@ -60,7 +90,7 @@ export function ContactForm({ locale }: Props) {
             type="email"
             required
             autoComplete="email"
-            className="mt-1 block w-full rounded-md border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            className="mt-1 block w-full rounded-lg border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
           />
         </div>
       </div>
@@ -74,7 +104,7 @@ export function ContactForm({ locale }: Props) {
           name="organization"
           type="text"
           autoComplete="organization"
-          className="mt-1 block w-full rounded-md border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+          className="mt-1 block w-full rounded-lg border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
         />
       </div>
 
@@ -87,7 +117,7 @@ export function ContactForm({ locale }: Props) {
           name="message"
           rows={5}
           required
-          className="mt-1 block w-full rounded-md border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+          className="mt-1 block w-full rounded-lg border border-brand-line bg-white px-3 py-2 text-sm text-brand-navy focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
         />
       </div>
 
@@ -103,11 +133,20 @@ export function ContactForm({ locale }: Props) {
       </p>
 
       {submitted ? (
-        <p role="status" className="rounded-md bg-brand-surface px-3 py-2 text-sm text-brand-navy">
-          {locale === 'fr'
-            ? 'Merci ! Votre message a été préparé. Veuillez envoyer un courriel à contact@rinet.center pour finaliser.'
-            : 'Thank you! Your message has been prepared. Please send an email to contact@rinet.center to finalize.'}
-        </p>
+        <div role="status" className="rounded-lg border border-brand-line bg-brand-surface px-4 py-3 text-sm text-brand-navy">
+          <p className="font-semibold">{locale === 'fr' ? 'Votre courriel est prêt.' : 'Your email is ready.'}</p>
+          <p className="mt-1 text-brand-muted">
+            {locale === 'fr'
+              ? 'Si votre application courriel ne s’est pas ouverte, utilisez le lien ci-dessous.'
+              : 'If your email app did not open, use the link below.'}
+          </p>
+          <a
+            href={mailtoHref}
+            className="mt-2 inline-flex font-semibold text-brand-accent underline underline-offset-4 hover:text-brand-blue"
+          >
+            {locale === 'fr' ? 'Ouvrir le courriel' : 'Open email'}
+          </a>
+        </div>
       ) : null}
     </form>
   );

@@ -8,6 +8,7 @@ type Props = {
   ctaPrimary: { label: string; href: string };
   ctaSecondary: { label: string; href: string };
   ctaTertiary?: { label: string; href: string };
+  highlights?: readonly string[];
   backgroundImage?: string;
   backgroundAlt?: string;
 };
@@ -19,6 +20,7 @@ export function Hero({
   ctaPrimary,
   ctaSecondary,
   ctaTertiary,
+  highlights = [],
   backgroundImage,
   backgroundAlt = '',
 }: Props) {
@@ -56,8 +58,8 @@ export function Hero({
           }}
         />
       )}
-      <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-        <div className="max-w-3xl">
+      <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="max-w-4xl">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 ring-1 ring-white/20 backdrop-blur">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
             {eyebrow}
@@ -79,6 +81,19 @@ export function Hero({
               </Button>
             ) : null}
           </div>
+          {highlights.length > 0 ? (
+            <dl className="mt-10 grid gap-3 sm:grid-cols-3" aria-label="RINET Center highlights">
+              {highlights.map((item) => {
+                const [value, ...labelParts] = item.split('|');
+                return (
+                  <div key={item} className="rounded-lg border border-white/15 bg-white/10 p-4 backdrop-blur">
+                    <dt className="font-display text-2xl font-bold text-white">{value}</dt>
+                    <dd className="mt-1 text-sm leading-snug text-white/80">{labelParts.join('|')}</dd>
+                  </div>
+                );
+              })}
+            </dl>
+          ) : null}
         </div>
       </div>
     </section>
