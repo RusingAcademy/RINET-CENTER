@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import type { Locale } from '@/i18n/config';
 import { getDictionary, buildNav, site } from '@/content/site';
@@ -11,6 +12,7 @@ type Props = { locale: Locale };
 
 export function Header({ locale }: Props) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const d = getDictionary(locale);
   const nav = buildNav(locale);
 
@@ -39,15 +41,23 @@ export function Header({ locale }: Props) {
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-brand-navy transition hover:text-brand-accent"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) => {
+            const active = pathname === item.href || pathname?.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={`rounded-full px-3 py-2 text-sm font-medium transition ${
+                  active
+                    ? 'bg-brand-surface text-brand-accent'
+                    : 'text-brand-navy hover:bg-brand-surface hover:text-brand-accent'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
@@ -63,7 +73,7 @@ export function Header({ locale }: Props) {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex items-center justify-center rounded-md p-2 text-brand-navy lg:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-brand-navy transition hover:bg-brand-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? d.nav.menuClose : d.nav.menuOpen}
@@ -79,18 +89,24 @@ export function Header({ locale }: Props) {
       </div>
 
       {open ? (
-        <div id="mobile-nav" className="border-t border-brand-line bg-white lg:hidden">
+        <div id="mobile-nav" className="border-t border-brand-line bg-white shadow-soft lg:hidden">
           <nav className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-3" aria-label="Mobile">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-brand-surface"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {nav.map((item) => {
+              const active = pathname === item.href || pathname?.startsWith(`${item.href}/`);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={() => setOpen(false)}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    active ? 'bg-brand-surface text-brand-accent' : 'text-brand-navy hover:bg-brand-surface'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <div className="mt-3 flex items-center justify-between gap-3 border-t border-brand-line pt-3">
               <LanguageSwitcher current={locale} />
               <Link

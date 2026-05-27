@@ -83,19 +83,19 @@ export function Footer({ locale }: Props) {
           </h2>
           <ul className="mt-4 flex flex-wrap gap-3 text-sm">
             <li>
-              <a className="text-white/90 hover:text-brand-gold" href={site.social.instagram}>Instagram</a>
+              <a className="text-white/90 hover:text-brand-gold" href={site.social.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
             </li>
             <li>
-              <a className="text-white/90 hover:text-brand-gold" href={site.social.facebook}>Facebook</a>
+              <a className="text-white/90 hover:text-brand-gold" href={site.social.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
             </li>
             <li>
-              <a className="text-white/90 hover:text-brand-gold" href={site.social.twitter}>Twitter</a>
+              <a className="text-white/90 hover:text-brand-gold" href={site.social.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>
             </li>
             <li>
-              <a className="text-white/90 hover:text-brand-gold" href={site.social.youtube}>YouTube</a>
+              <a className="text-white/90 hover:text-brand-gold" href={site.social.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
             </li>
             <li>
-              <a className="text-white/90 hover:text-brand-gold" href={site.social.tiktok}>TikTok</a>
+              <a className="text-white/90 hover:text-brand-gold" href={site.social.tiktok} target="_blank" rel="noopener noreferrer">TikTok</a>
             </li>
           </ul>
         </div>
@@ -103,7 +103,7 @@ export function Footer({ locale }: Props) {
       <div className="border-t border-white/15">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start justify-between gap-2 px-4 py-5 text-xs text-white/70 sm:flex-row sm:items-center sm:px-6 lg:px-8">
           <p>
-            © {year} {site.name}. {d.footer.rights}
+            &copy; {year} {site.name}. {d.footer.rights}
           </p>
           <p>{d.footer.builtWith}</p>
         </div>
